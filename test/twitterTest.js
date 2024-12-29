@@ -36,3 +36,11 @@ const fetchTweet = async (tweetId) => {
 
 // Test the function by calling it with a tweet ID
 fetchTweet('1873397442538021282'); // Replace with a valid tweet ID
+
+//command to test this out, Seem to work...just need ot learn when My limit is 
+/// I think its 15 minutes per call  
+// node test/twitterTest.js      
+
+// to run the other stuff
+// node server.js
+
