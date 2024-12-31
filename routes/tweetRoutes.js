@@ -1,9 +1,9 @@
 const express = require('express');
-const { saveTweet } = require('../controllers/tweetControllers.js');
+const { fetchAndSaveTweet } = require('../controllers/tweetControllers.js');
 
-const router = express.Router();
+const router = express.Router(); // Define the router first
 
-// Route to save tweet data
-router.post('/saveTweet', saveTweet);
+// Define a route to fetch and save tweet data
+router.get('/:tweetId', fetchAndSaveTweet);
 
-module.exports = router;
+module.exports = router; // Export the router after defining it

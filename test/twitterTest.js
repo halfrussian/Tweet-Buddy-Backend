@@ -44,3 +44,15 @@ fetchTweet('1873397442538021282'); // Replace with a valid tweet ID
 // to run the other stuff
 // node server.js
 
+
+// Works 
+//From this URL https://x.com/TooWhiteToTweet/status/1873397442538021282 
+//THIS IS THE RETURN  
+//Username: TooWhiteToTweet
+// Tweet Text: I pledge allegiance to the flags
+// of the economic zone of Weimerica
+// and to the foreign interests for which they stand,
+// one shopping mall under ZOG, in decrepitude,
+// with diversity, equity, and inclusion for all but Whites. https://t.co/VcOnCTeQtL
+// Media URL: https://pbs.twimg.com/media/Gf-lBbuW4AAAY6G.jpg
+//

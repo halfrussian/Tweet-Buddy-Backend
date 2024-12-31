@@ -1,39 +1,40 @@
 const axios = require('axios');
-const Tweet = require('../models/TweetModels.js');
+const Tweet = require('../models/TweetModels.js'); // Import the Tweet schema
 
-const saveTweet = async (req, res) => {
-  const { tweetId } = req.body;
+// Fetch and save tweet data
+const fetchAndSaveTweet = async (req, res) => {
+  const { tweetId } = req.params; // Extract tweet ID from the route parameter
+
+  const url = `https://api.twitter.com/2/tweets/${tweetId}?tweet.fields=text&expansions=author_id,attachments.media_keys&media.fields=url&user.fields=username`;
+  const config = {
+    headers: {
+      Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`,
+    },
+  };
+
 
   try {
-    // Make API call to Twitter to fetch tweet details
-    const twitterResponse = await axios.get(`https://api.twitter.com/2/tweets/${tweetId}`, {
-      headers: {
-        Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`,
-      },
-    });
+    // Fetch tweet data from Twitter API
+    const response = await axios.get(url, config);
+    const tweetData = response.data.data;
+    const userData = response.data.includes.users[0];
+    const mediaData = response.data.includes.media || [];
 
-    const tweetData = twitterResponse.data.data;
-    const userData = twitterResponse.data.includes.users[0];
-
-    // Save tweet data to MongoDB
+    // Create and save tweet in MongoDB
     const tweet = new Tweet({
       tweetId: tweetData.id,
+      username: userData.username,
       text: tweetData.text,
-      user: {
-        id: userData.id,
-        name: userData.name,
-        handle: userData.username,
-      },
-      media: tweetData.attachments ? tweetData.attachments.media_keys : [],
+      media: mediaData.map((media) => media.url), // Extract media URLs
     });
 
     await tweet.save();
 
-    res.status(201).json({ message: 'Tweet saved successfully!', tweet });
+    res.status(200).json({ message: 'Tweet saved successfully', tweet });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Failed to save tweet', error: error.message });
+    console.error('Error fetching or saving tweet:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Failed to fetch or save tweet' });
   }
 };
 
-module.exports = { saveTweet };
+module.exports = { fetchAndSaveTweet };

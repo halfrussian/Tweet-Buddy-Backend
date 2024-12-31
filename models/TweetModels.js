@@ -1,14 +1,13 @@
 const mongoose = require('mongoose');
 
 const tweetSchema = new mongoose.Schema({
-  tweetId: { type: String, required: true },
-  text: { type: String, required: true },
-  user: { 
-    id: { type: String, required: true },
-    name: { type: String, required: true },
-    handle: { type: String, required: true }
-  },
-  media: [{ type: String }], // URLs of images/videos
-}, { timestamps: true });
+  tweetId: { type: String, required: true }, // Tweet ID
+  username: { type: String, required: true }, // Username of the author
+  text: { type: String, required: true }, // Tweet content
+  media: [{ type: String }], // Array of media URLs (optional)
+});
 
-module.exports = mongoose.model('Tweet', tweetSchema);
+const Tweet = mongoose.model('Tweet', tweetSchema);
+
+module.exports = Tweet;
+
