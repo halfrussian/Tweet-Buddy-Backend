@@ -2,10 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const tweetRoutes = require('./routes/tweetRoutes.js');
+const cors = require('cors');
 
 dotenv.config();
 
 const app = express();
+app.use(cors());
 
 // Connect to MongoDB
 mongoose
