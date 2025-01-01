@@ -4,23 +4,18 @@ const Tweet = require('../models/TweetModels.js');
 const router = express.Router(); // Define the router first
 
 // Define a route to fetch and save tweet data
-router.get('/:tweetId', fetchAndSaveTweet);
 
-router.get('/testSave', async (req, res) => {
+router.get('/all', async (req, res) => {
+    console.log('Fetching all tweets...');
     try {
-      const tweet = {
-        tweetId: "1234567890",
-        username: "TestUser",
-        text: "This is a test tweet",
-        media: []
-      };
-  
-      const savedTweet = await Tweet.create(tweet);
-      res.status(200).json({ message: "Test tweet saved", tweet: savedTweet });
+      const tweets = await Tweet.find(); // Fetch all tweets from MongoDB
+      res.status(200).json(tweets); // Send the tweets as the response
     } catch (error) {
-      console.error("Error during test save:", error);
-      res.status(500).json({ error: "Test save failed" });
+      console.error('Error fetching tweets:', error);
+      res.status(500).json({ error: 'Failed to fetch tweets' });
     }
   });
-  
-  module.exports = router; // Export the router after defining it
+
+router.get('/:tweetId', fetchAndSaveTweet);
+
+  module.exports = router; 
