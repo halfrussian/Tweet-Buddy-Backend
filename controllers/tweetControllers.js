@@ -1,9 +1,8 @@
 const axios = require('axios');
-const Tweet = require('../models/TweetModels.js'); // Import the Tweet schema
+const Tweet = require('../models/TweetModels.js');
 
-// Fetch and save tweet data
 const fetchAndSaveTweet = async (req, res) => {
-  const { tweetId } = req.params; // Extract tweet ID from the route parameter
+  const { tweetId } = req.params; 
 
   const url = `https://api.twitter.com/2/tweets/${tweetId}?tweet.fields=text&expansions=author_id,attachments.media_keys&media.fields=url&user.fields=username`;
   const config = {
@@ -20,12 +19,11 @@ const fetchAndSaveTweet = async (req, res) => {
     const userData = response.data.includes.users[0];
     const mediaData = response.data.includes.media || [];
 
-    // Create and save tweet in MongoDB
     const tweet = new Tweet({
       tweetId: tweetData.id,
       username: userData.username,
       text: tweetData.text,
-      media: mediaData.map((media) => media.url), // Extract media URLs
+      media: mediaData.map((media) => media.url), 
     });
 
     await tweet.save();
