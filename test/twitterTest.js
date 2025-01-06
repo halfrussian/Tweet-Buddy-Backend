@@ -1,7 +1,6 @@
 const axios = require('axios');
 require('dotenv').config();
 
-// Function to fetch tweet data with media
 const fetchTweet = async (tweetId) => {
   const url = `https://api.twitter.com/2/tweets/${tweetId}?tweet.fields=text&expansions=author_id,attachments.media_keys&user.fields=username&media.fields=url`;
   const config = {
@@ -12,16 +11,10 @@ const fetchTweet = async (tweetId) => {
 
   try {
     const response = await axios.get(url, config);
-    // Extract tweet data
     const tweetData = response.data.data;
     const userData = response.data.includes.users[0];
     const mediaData = response.data.includes.media || [];
 
-    // Log tweet content and media (URLs)
-    console.log('Username:', userData.username);
-    console.log('Tweet Text:', tweetData.text);
-
-    // If media exists, log the media URLs
     if (mediaData.length > 0) {
       mediaData.forEach(media => {
         console.log('Media URL:', media.url);
@@ -34,25 +27,6 @@ const fetchTweet = async (tweetId) => {
   }
 };
 
-// Test the function by calling it with a tweet ID
-fetchTweet('1873397442538021282'); // Replace with a valid tweet ID
 
-//command to test this out, Seem to work...just need ot learn when My limit is 
-/// I think its 15 minutes per call  
-// node test/twitterTest.js      
+fetchTweet('1873397442538021282'); 
 
-// to run the other stuff
-// node server.js
-
-
-// Works 
-//From this URL https://x.com/TooWhiteToTweet/status/1873397442538021282 
-//THIS IS THE RETURN  
-//Username: TooWhiteToTweet
-// Tweet Text: I pledge allegiance to the flags
-// of the economic zone of Weimerica
-// and to the foreign interests for which they stand,
-// one shopping mall under ZOG, in decrepitude,
-// with diversity, equity, and inclusion for all but Whites. https://t.co/VcOnCTeQtL
-// Media URL: https://pbs.twimg.com/media/Gf-lBbuW4AAAY6G.jpg
-//
